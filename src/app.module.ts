@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { HealthController } from './health/health.controller';
+import { ReadinessService } from './health/readiness.service';
 import { SqsModule } from './infrastructure/messaging/sqs/sqs.module';
 import { entities } from './infrastructure/persistence/postgres/entities';
 
@@ -21,5 +22,6 @@ import { entities } from './infrastructure/persistence/postgres/entities';
     SqsModule,
   ],
   controllers: [HealthController],
+  providers: [ReadinessService],
 })
 export class AppModule {}
