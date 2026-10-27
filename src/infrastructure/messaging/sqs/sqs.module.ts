@@ -1,8 +1,9 @@
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
-export const SQS_CLIENT = Symbol('SQS_CLIENT');
+import { SqsConsumer } from './sqs-consumer';
+import { SqsPublisher } from './sqs-publisher';
+import { SQS_CLIENT } from './sqs.tokens';
 
 @Module({
   providers: [
@@ -22,7 +23,9 @@ export const SQS_CLIENT = Symbol('SQS_CLIENT');
         });
       },
     },
+    SqsPublisher,
+    SqsConsumer,
   ],
-  exports: [SQS_CLIENT],
+  exports: [SQS_CLIENT, SqsPublisher, SqsConsumer],
 })
 export class SqsModule {}
