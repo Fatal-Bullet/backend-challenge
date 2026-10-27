@@ -4,6 +4,8 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { HealthController } from './health/health.controller';
 import { ReadinessService } from './health/readiness.service';
+import { CreateWalletService } from './application/wallet/create-wallet.service';
+import { WalletController } from './application/wallet/wallet.controller';
 import { SqsModule } from './infrastructure/messaging/sqs/sqs.module';
 import { entities } from './infrastructure/persistence/postgres/entities';
 
@@ -11,6 +13,7 @@ import { entities } from './infrastructure/persistence/postgres/entities';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MikroOrmModule.forRootAsync({
+      driver: PostgreSqlDriver,
       useFactory: (configService: ConfigService) => ({
         clientUrl: configService.getOrThrow<string>('DATABASE_URL'),
         driver: PostgreSqlDriver,
@@ -21,7 +24,7 @@ import { entities } from './infrastructure/persistence/postgres/entities';
     }),
     SqsModule,
   ],
-  controllers: [HealthController],
-  providers: [ReadinessService],
+  controllers: [HealthController, WalletController],
+  providers: [ReadinessService, CreateWalletService],
 })
 export class AppModule {}

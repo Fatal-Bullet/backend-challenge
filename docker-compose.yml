@@ -11,12 +11,14 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   localstack:
-    image: localstack/localstack:stable
+    image: localstack/localstack:3.8.1
     environment:
       SERVICES: sqs
       AWS_DEFAULT_REGION: us-east-1
     ports:
       - '4566:4566'
+    volumes:
+      - ./docker/localstack/init/ready.d:/etc/localstack/init/ready.d
 
 volumes:
   postgres-data:
